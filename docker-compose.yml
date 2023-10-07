@@ -1,26 +1,26 @@
 version: '3'
 services:
   # FastAPI Application
-  # fastapi-app:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - '8000:8000'
-  #   depends_on:
-  #     - postgres-db
-  #   command:
-  #     [
-  #       'poetry',
-  #       'run',
-  #       'uvicorn',
-  #       '--host',
-  #       '0.0.0.0',
-  #       '--port',
-  #       '8000',
-  #       'main:app',
-  #       '--reload',
-  #     ]
+  fastapi-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    depends_on:
+      - postgres-db
+    command:
+      [
+        'poetry',
+        'run',
+        'uvicorn',
+        '--host',
+        '0.0.0.0',
+        '--port',
+        '8000',
+        'main:app',
+        '--reload',
+      ]
 
   # PostgreSQL Database
   postgres-db:
