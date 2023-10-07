@@ -25,3 +25,5 @@ python-multipart = "^0.0.6"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
+[virtualenvs]
+in-project = true
