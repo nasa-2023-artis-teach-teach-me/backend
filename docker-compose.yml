@@ -1,0 +1,36 @@
+version: '3'
+services:
+  # FastAPI Application
+  # fastapi-app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '8000:8000'
+  #   depends_on:
+  #     - postgres-db
+  #   command:
+  #     [
+  #       'poetry',
+  #       'run',
+  #       'uvicorn',
+  #       '--host',
+  #       '0.0.0.0',
+  #       '--port',
+  #       '8000',
+  #       'main:app',
+  #       '--reload',
+  #     ]
+
+  # PostgreSQL Database
+  postgres-db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: nasa_backend
+      POSTGRES_PASSWORD: nasa_backend
+      POSTGRES_DB: mydatabase
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    ports:
+      - '45432:5432'
