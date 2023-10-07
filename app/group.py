@@ -6,7 +6,7 @@ class Group:
     def __init__(self, reader: AlgoReader) -> None:
         
         self.READER = reader
-        self.THRESHOLD = 0.5
+        self.THRESHOLD = 0.2
         self.DISTANCE = []
         self.POSITIONS = []
         self.GROUPS = []
