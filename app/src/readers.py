@@ -1,6 +1,6 @@
 from typing import List
 
-from src.types import Position
+from app.src.types import Position
 
 class AlgoReader:
 

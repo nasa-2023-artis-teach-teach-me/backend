@@ -9,18 +9,10 @@ services:
       - '8000:8000'
     depends_on:
       - postgres-db
-    command:
-      [
-        'poetry',
-        'run',
-        'uvicorn',
-        '--host',
-        '0.0.0.0',
-        '--port',
-        '8000',
-        'main:app',
-        '--reload',
-      ]
+    env_file:
+      - .env
+    volumes:
+      - ./app:/app/app
 
   # PostgreSQL Database
   postgres-db:
@@ -31,6 +23,7 @@ services:
       POSTGRES_PASSWORD: nasa_backend
       POSTGRES_DB: mydatabase
     volumes:
-      - ./db:/docker-entrypoint-initdb.d/
+      - ./db:/var/lib/postgresql/data
+      - ./data:/data
     ports:
       - '45432:5432'

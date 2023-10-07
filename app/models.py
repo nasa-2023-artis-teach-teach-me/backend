@@ -1,8 +1,7 @@
 """Module containing SQLAlchemy models for the Fire and Report tables."""
 
 from sqlalchemy import Column, Float, Integer, String, TIMESTAMP
-from database import Base
-
+from app.database import Base
 
 class Fire(Base):
     """

@@ -5,7 +5,7 @@ import json
 from datetime import datetime
 import geojson
 from sqlalchemy.orm import Session
-from models import Fire, Report
+from app.models import Fire, Report
 
 
 def get_fire(db: Session, fire_id: int):
@@ -43,6 +43,36 @@ def get_fire(db: Session, fire_id: int):
     geojson_string = geojson.dumps(feature_collection, sort_keys=True)
     geojson_dict = json.loads(geojson_string)
     return geojson_dict
+
+def get_fire_raw_by_date(db: Session, date: str):
+    """
+    Retrieve fire data by date and confidence level and return it as GeoJSON.
+
+    Args:
+        db (Session): The SQLAlchemy database session.
+        date (str): The date for which to retrieve fire data.
+
+    Returns:
+        dict: A GeoJSON representation of the retrieved fire data.
+    """
+    confidence: int = 70
+    fire_data = list(
+        db.query(Fire)
+        .filter(Fire.acq_date == date)
+        .filter(Fire.confidence >= confidence)
+        .all()
+    )
+
+    result = []
+
+    for data in fire_data:
+
+        result.append({
+            "id": data.id,
+            "position": [data.longitude, data.latitude]
+        })
+
+    return result
 
 
 def get_fire_by_date(db: Session, date: str):

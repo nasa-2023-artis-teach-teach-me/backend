@@ -1,7 +1,7 @@
 import uuid
 import io
 from minio import Minio
-import config
+from app import config
 
 
 def store_image(image):

@@ -1,9 +1,7 @@
-from typing import List
+from app.src.readers import AlgoReader
+from app.src.mst import Graph
 
-from src.readers import AlgoReader
-from src.mst import Graph
-
-class Algo:
+class Group:
 
     def __init__(self, reader: AlgoReader) -> None:
         
@@ -63,7 +61,7 @@ if __name__ == "__main__":
     from src.readers import DEFAULT
     import matplotlib.pyplot as plt
 
-    algo = Algo(DEFAULT())
+    algo = Group(DEFAULT())
     result = []
 
     areas = algo.gen()
