@@ -202,6 +202,33 @@ async def upload_image(image: UploadFile = File(...)):
     image_url = store_image(image_data)
     return {"url": image_url}
 
+
+@app.patch("/api/report/{report_id}")
+async def update_report(report_id: int, latitude: str = Form(None),
+                       longitude: str = Form(None),
+                       message: str = Form(None),
+                       new_image: UploadFile = File(None),
+                       db: Session = Depends(get_db)):
+    """
+    update report data
+    """
+    report_data = {
+        "latitude": latitude,
+        "longitude": longitude,
+        "message": message,
+        "image": new_image,
+    }
+
+    if new_image is not None:
+        image_data = await report_data["image"].read()
+        image_url = store_image(image_data)
+        report_data = crud.update_report(db, report_id, report_data, image_url)
+    else:
+        image_url = ""
+        report_data = crud.update_report(db, report_id, report_data, image_url)
+    return report_data
+
+
 @app.get("/api/report/{lon}/{lat}", response_model=None)
 async def get_report_by_lonlat(lon: str, lat: str, db: Session = Depends(get_db)):
 

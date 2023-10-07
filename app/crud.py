@@ -4,6 +4,7 @@ This file implement crud actions
 import json
 from datetime import datetime
 import geojson
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from app.models import Fire, Report
 
@@ -157,6 +158,36 @@ def get_report(db: Session, report_id: int):
     """
     data = db.query(Report).filter(Report.id == report_id).first()
     return data
+
+
+
+def update_report(db: Session, report_id: int ,report_data: object, image_url: str = None):
+    """
+    Update a report by its unique ID from the database.
+
+    Args:
+        db (Session): The SQLAlchemy database session.
+        report_id (int): The unique ID of the report to retrieve.
+
+    Returns:
+        Report: The report data corresponding to the given report ID.
+    """
+    existing_report = db.query(Report).filter(Report.id == report_id).first()
+    if existing_report is None:
+        raise HTTPException(status_code=404, detail="Report with not found")
+
+    if report_data.get("latitude") is not None:
+        existing_report.latitude = report_data["latitude"]
+    if report_data.get("longitude") is not None:
+        existing_report.longitude = report_data["longitude"]
+    if report_data.get("message") is not None:
+        existing_report.message = report_data["message"]
+    existing_report.image_url = image_url
+
+    db.commit()
+
+    db.refresh(existing_report)
+    return existing_report
 
 def get_report_by_lonlat(db: Session, lon: str, lat: str):
 
