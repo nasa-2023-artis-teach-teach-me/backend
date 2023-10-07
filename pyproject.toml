@@ -17,6 +17,8 @@ sqlalchemy = "^2.0.21"
 psycopg2-binary = "^2.9.9"
 geopandas = "^0.14.0"
 geojson = "^3.0.1"
+minio = "^7.1.17"
+python-multipart = "^0.0.6"
 
 
 [build-system]
