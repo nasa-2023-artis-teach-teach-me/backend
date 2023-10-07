@@ -157,3 +157,10 @@ def get_report(db: Session, report_id: int):
     """
     data = db.query(Report).filter(Report.id == report_id).first()
     return data
+
+def get_report_by_lonlat(db: Session, lon: str, lat: str):
+
+    print(lon)
+
+    data = db.query(Report).filter(Report.longitude == lon).all()
+    return data

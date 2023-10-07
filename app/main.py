@@ -132,8 +132,8 @@ async def get_raw_fire(date: str, db: Session = Depends(get_db)):
 
 @app.post("/api/report", response_model=None)
 async def post_report(
-    latitude: float = Form(...),
-    longitude: float = Form(...),
+    latitude: str = Form(...),
+    longitude: str = Form(...),
     message: str = Form(...),
     image: UploadFile = File(...),
     db: Session = Depends(get_db),
@@ -187,6 +187,11 @@ async def upload_image(image: UploadFile = File(...)):
     image_url = store_image(image_data)
     return {"url": image_url}
 
+@app.get("/api/report/{lon}/{lat}", response_model=None)
+async def get_report_by_lonlat(lon: str, lat: str, db: Session = Depends(get_db)):
+
+    report_data = crud.get_report_by_lonlat(db, lon, lat)
+    return report_data
 
 def start():
     """

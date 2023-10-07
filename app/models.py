@@ -54,8 +54,8 @@ class Report(Base):
     """
     __tablename__ = "reports"
     id = Column(Integer, primary_key=True, index=True)
-    latitude = Column(Float)
-    longitude = Column(Float)
+    latitude = Column(String)
+    longitude = Column(String)
     image_url = Column(String)
     message = Column(String)
     timestamp = Column(TIMESTAMP)
