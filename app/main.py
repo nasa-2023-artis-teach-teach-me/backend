@@ -2,11 +2,12 @@
 This module contains FastAPI endpoints for handling fire reports and images.
 """
 from functools import lru_cache
-import uvicorn
 import json
-from fastapi import Depends, FastAPI, UploadFile, File, Form
-from typing_extensions import Annotated
 from typing import List
+import uvicorn
+from fastapi import Depends, FastAPI, UploadFile, File, Form
+from fastapi.middleware.cors import CORSMiddleware
+from typing_extensions import Annotated
 from sqlalchemy.orm import Session
 from app.map import get_transaction_count
 from app.database import SessionLocal
@@ -18,6 +19,15 @@ from app.s3 import store_image
 
 app = FastAPI()
 
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def get_db():
     """
