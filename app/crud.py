@@ -144,8 +144,21 @@ def post_report(db: Session, report_data: object, image_url: str = None):
     db.refresh(db_report)
     return db_report
 
+def get_report(db: Session):
+    """
+    Retrieve a report by its unique ID from the database.
 
-def get_report(db: Session, report_id: int):
+    Args:
+        db (Session): The SQLAlchemy database session.
+
+    Returns:
+        Report: The report data.
+    """
+    data = db.query(Report).all()
+    return list(data)
+
+
+def get_report_by_id(db: Session, report_id: int):
     """
     Retrieve a report by its unique ID from the database.
 

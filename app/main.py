@@ -140,6 +140,20 @@ async def get_raw_fire(date: str, db: Session = Depends(get_db)):
     return result
 
 
+@app.get("/api/report", response_model=None)
+async def get_report(db: Session = Depends(get_db)):
+    """
+    Get fire data.
+
+    Parameters:
+    - db (Session): The database session to use.
+
+    Returns:
+    dict: A dictionary containing fire data.
+    """
+    report_data = crud.get_report(db)
+    return report_data
+
 @app.post("/api/report", response_model=None)
 async def post_report(
     latitude: str = Form(...),
@@ -179,7 +193,7 @@ async def post_report(
 
 
 @app.get("/api/report/{report_id}", response_model=None)
-async def get_report(report_id: int, db: Session = Depends(get_db)):
+async def get_report_by_id(report_id: int, db: Session = Depends(get_db)):
     """
     Get report data by its ID.
 
@@ -190,7 +204,7 @@ async def get_report(report_id: int, db: Session = Depends(get_db)):
     Returns:
     dict: A dictionary containing report data.
     """
-    report_data = crud.get_report(db, report_id)
+    report_data = crud.get_report_by_id(db, report_id)
     return report_data
 
 @app.post("/api/image")
