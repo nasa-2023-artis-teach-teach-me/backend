@@ -119,7 +119,7 @@ def get_fire_by_date(db: Session, date: str):
     return geojson_dict
 
 
-def post_report(db: Session, report_data: object, image_url: str):
+def post_report(db: Session, report_data: object, image_url: str = None):
     """
     Create and store a new report in the database.
 

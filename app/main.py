@@ -135,7 +135,7 @@ async def post_report(
     latitude: str = Form(...),
     longitude: str = Form(...),
     message: str = Form(...),
-    image: UploadFile = File(...),
+    image: UploadFile = File(None),
     db: Session = Depends(get_db),
 ):
     """
@@ -157,9 +157,14 @@ async def post_report(
         "message": message,
         "image": image,
     }
-    image_data = await report_data["image"].read()
-    image_url = store_image(image_data)
-    report_data = crud.post_report(db, report_data, image_url)
+
+    if image is not None:
+        image_data = await report_data["image"].read()
+        image_url = store_image(image_data)
+        report_data = crud.post_report(db, report_data, image_url)
+    else:
+        image_url = ""
+        report_data = crud.post_report(db, report_data, image_url)
     return report_data
 
 
