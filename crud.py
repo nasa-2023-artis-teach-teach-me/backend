@@ -7,7 +7,7 @@ import json
 def get_fire(db: Session, fire_id: int):
     features = []
     data = db.query(Fire).filter(Fire.id == fire_id).first()
-    point = geojson.Point((data.latitude, data.latitude))
+    point = geojson.Point((data.longitude, data.latitude, 0))
     properties = {
         "id": data.id,
         "country_id": data.country_id,
@@ -37,7 +37,7 @@ def get_fire_by_date(db: Session, date: str):
     features = []
 
     for data in data:
-        point = geojson.Point((data.latitude, data.latitude,0))
+        point = geojson.Point((data.longitude, data.latitude, 0))
         properties = {
             "id": data.id,
             "country_id": data.country_id,
