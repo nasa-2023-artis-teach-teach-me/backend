@@ -1,8 +1,7 @@
 """Module containing SQLAlchemy models for the Fire and Report tables."""
 
 from sqlalchemy import Column, Float, Integer, String, TIMESTAMP
-from database import Base
-
+from app.database import Base
 
 class Fire(Base):
     """
@@ -55,8 +54,8 @@ class Report(Base):
     """
     __tablename__ = "reports"
     id = Column(Integer, primary_key=True, index=True)
-    latitude = Column(Float)
-    longitude = Column(Float)
+    latitude = Column(String)
+    longitude = Column(String)
     image_url = Column(String)
     message = Column(String)
     timestamp = Column(TIMESTAMP)

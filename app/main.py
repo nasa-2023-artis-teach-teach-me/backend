@@ -3,14 +3,18 @@ This module contains FastAPI endpoints for handling fire reports and images.
 """
 from functools import lru_cache
 import uvicorn
+import json
 from fastapi import Depends, FastAPI, UploadFile, File, Form
 from typing_extensions import Annotated
+from typing import List
 from sqlalchemy.orm import Session
-from map import get_transaction_count
-from database import SessionLocal
-import crud
-import config
-from s3 import store_image
+from app.map import get_transaction_count
+from app.database import SessionLocal
+from app import crud
+from app import config
+from app.group import Group
+from app.src.readers import INPUT
+from app.s3 import store_image
 
 app = FastAPI()
 
@@ -86,11 +90,50 @@ async def get_fire_by_date(date: str, db: Session = Depends(get_db)):
     fire_data = crud.get_fire_by_date(db, date)
     return fire_data
 
+@app.get("/api/fire/raw/{date}", response_model=None)
+async def get_raw_fire(date: str, db: Session = Depends(get_db)):
+
+    positions: List[List[int, int]] = []
+
+    fires = crud.get_fire_raw_by_date(db, date)
+
+    for fire in fires:
+        positions.append(fire.get("position"))
+
+    groups = Group(INPUT(positions))
+    result = []
+
+    for group in groups.gen():
+
+        ids = []
+        xs = [pos.x for pos in group]
+        ys = [pos.y for pos in group]
+
+        for location in group:
+
+            loc = [location.x, location.y]
+
+            for fire in fires:
+
+                if fire.get("position") == loc:
+                    ids.append(fire.get("id"))
+                    break
+
+        result.append({
+            "center": [sum(xs)/len(xs), sum(ys)/len(ys)],
+            "positions": json.loads(repr(group)),
+            "id": ids
+        })
+
+    print(result)
+
+    return result
+
 
 @app.post("/api/report", response_model=None)
 async def post_report(
-    latitude: float = Form(...),
-    longitude: float = Form(...),
+    latitude: str = Form(...),
+    longitude: str = Form(...),
     message: str = Form(...),
     image: UploadFile = File(...),
     db: Session = Depends(get_db),
@@ -135,7 +178,6 @@ async def get_report(report_id: int, db: Session = Depends(get_db)):
     report_data = crud.get_report(db, report_id)
     return report_data
 
-
 @app.post("/api/image")
 async def upload_image(image: UploadFile = File(...)):
     """
@@ -145,6 +187,11 @@ async def upload_image(image: UploadFile = File(...)):
     image_url = store_image(image_data)
     return {"url": image_url}
 
+@app.get("/api/report/{lon}/{lat}", response_model=None)
+async def get_report_by_lonlat(lon: str, lat: str, db: Session = Depends(get_db)):
+
+    report_data = crud.get_report_by_lonlat(db, lon, lat)
+    return report_data
 
 def start():
     """

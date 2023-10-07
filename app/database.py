@@ -6,7 +6,7 @@ It defines the SQLAlchemy database engine, session factory, and other database-r
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-import config
+from app import config
 
 settings = config.Settings()
 SQLALCHEMY_DATABASE_URL = settings.DATABASE_URL
