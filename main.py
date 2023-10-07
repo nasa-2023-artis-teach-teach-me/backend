@@ -1,12 +1,13 @@
 import uvicorn
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, UploadFile, File
 from functools import lru_cache
 from typing_extensions import Annotated
 from sqlalchemy.orm import Session
 from map import get_transaction_count
 from database import SessionLocal
 import crud, schemas, config
-from typing import List 
+from typing import List
+from s3 import store_image
 app = FastAPI()
 
 
@@ -30,6 +31,14 @@ async def count(settings: Annotated[config.Settings, Depends(get_settings)]):
 async def fire(fire_id: int,db: Session = Depends(get_db)):
     fire_data = crud.get_fire(db,fire_id)
     return fire_data
+
+# upload image to minio with status code 200
+@app.post("/api/image")
+async def upload_image(image: UploadFile = File(...)):
+    image_data = await image.read()
+    image_url = store_image(image_data)
+    return {"url": image_url}
+
 
 def start():
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
