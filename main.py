@@ -36,6 +36,13 @@ async def get_fire_by_date(date: str,db: Session = Depends(get_db)):
     fire_data = crud.get_fire_by_date(db,date)
     return fire_data
 
+
+@app.post("/api/repost", response_model=None)
+async def post_report(report_data: schemas.ReportCreate ,db: Session = Depends(get_db)):
+    report_data = crud.post_report(db,report_data)
+    return report_data
+
+
 def start():
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
 

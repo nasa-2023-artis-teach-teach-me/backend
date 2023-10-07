@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-
+from datetime import datetime
 class Fire(BaseModel):
     id: int
     country_id: str
@@ -17,3 +17,14 @@ class Fire(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class ReportCreate(BaseModel):
+    latitude: float
+    longitude: float
+    image_url: str  
+    message: str
+    timestamp: str = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    class Config:
+        from_attributes = True
+    

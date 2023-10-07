@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models import Fire
+from models import Fire, Report
 from typing import List 
 import geojson
 import json
@@ -58,3 +58,11 @@ def get_fire_by_date(db: Session, date: str):
     geojson_string = geojson.dumps(feature_collection, sort_keys=True)
     geojson_dict = json.loads(geojson_string)
     return geojson_dict
+
+
+def post_report(db: Session, report_data: object):
+    db_report = Report(latitude=report_data.latitude, longitude=report_data.longitude, image_url=report_data.image_url, message=report_data.message, timestamp=report_data.timestamp)
+    db.add(db_report)
+    db.commit()
+    db.refresh(db_report)
+    return db_report

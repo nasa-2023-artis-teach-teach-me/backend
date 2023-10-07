@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Float, Integer, String
+from sqlalchemy import Column, Float, Integer, String, TIMESTAMP
 from database import Base
 
 class Fire(Base):
@@ -18,3 +18,12 @@ class Fire(Base):
     frp = Column(Float)
     daynight = Column(String)
 
+class Report(Base):
+    __tablename__ = "reports"
+
+    id = Column(Integer, primary_key=True, index=True)
+    latitude = Column(Float)
+    longitude = Column(Float) 
+    image_url = Column(String) 
+    message = Column(String) 
+    timestamp = Column(TIMESTAMP) 
