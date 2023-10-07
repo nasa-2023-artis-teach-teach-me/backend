@@ -182,7 +182,8 @@ def update_report(db: Session, report_id: int ,report_data: object, image_url: s
         existing_report.longitude = report_data["longitude"]
     if report_data.get("message") is not None:
         existing_report.message = report_data["message"]
-    existing_report.image_url = image_url
+    if image_url is not None:
+        existing_report.image_url = image_url
 
     db.commit()
 

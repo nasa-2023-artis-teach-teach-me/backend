@@ -224,8 +224,7 @@ async def update_report(report_id: int, latitude: str = Form(None),
         image_url = store_image(image_data)
         report_data = crud.update_report(db, report_id, report_data, image_url)
     else:
-        image_url = ""
-        report_data = crud.update_report(db, report_id, report_data, image_url)
+        report_data = crud.update_report(db, report_id, report_data)
     return report_data
 
 
