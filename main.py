@@ -27,7 +27,7 @@ async def count(settings: Annotated[config.Settings, Depends(get_settings)]):
     return {"message": "Hello World", "transaction count": count}
 
 @app.get("/api/fire/{fire_id}", response_model=None)
-async def fire(fire_id: int,db: Session = Depends(get_db)):
+async def get_fire(fire_id: int,db: Session = Depends(get_db)):
     fire_data = crud.get_fire(db,fire_id)
     return fire_data
 
@@ -37,11 +37,15 @@ async def get_fire_by_date(date: str,db: Session = Depends(get_db)):
     return fire_data
 
 
-@app.post("/api/repost", response_model=None)
+@app.post("/api/report", response_model=None)
 async def post_report(report_data: schemas.ReportCreate ,db: Session = Depends(get_db)):
     report_data = crud.post_report(db,report_data)
     return report_data
 
+@app.get("/api/report/{report_id}", response_model=None)
+async def get_report(report_id: int,db: Session = Depends(get_db)):
+    report_data = crud.get_report(db,report_id)
+    return report_data
 
 def start():
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

@@ -66,3 +66,7 @@ def post_report(db: Session, report_data: object):
     db.commit()
     db.refresh(db_report)
     return db_report
+
+def get_report(db: Session, report_id: int):
+    data = db.query(Report).filter(Report.id == report_id).first()
+    return data
