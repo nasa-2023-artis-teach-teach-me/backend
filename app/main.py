@@ -328,7 +328,7 @@ async def post_report(
     new_task = Job()
     jobs[new_task.uid] = new_task
 
-    print(f"REQUESTING AI FOR {json.dumps({
+    request_data = json.dumps({
         'longitude': report_data.get('longitude'),
         'latitude': report_data.get('latitude'),
         'message': report_data.get('message'),
@@ -336,7 +336,9 @@ async def post_report(
         'id': report_data.get('id'),
         'image_url': report_data.get('image_url'),
         'timestamp': report_data.get('timestamp')
-    })}")
+    })
+
+    print(f"REQUESTING AI FOR {request_data}")
 
     background_tasks.add_task(start_ai_task, new_task.uid, report_data)
 
