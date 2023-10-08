@@ -288,6 +288,7 @@ async def post_report(
     message: str = Form(...),
     category: str = Form(...),
     image: UploadFile = File(None),
+    from_nasa: bool = Form(...),
     db: Session = Depends(get_db),
 ):
     """
@@ -309,6 +310,7 @@ async def post_report(
         "message": message,
         "category": category,
         "image": image,
+        "from_nasa": from_nasa
     }
 
     if image is not None:
@@ -363,6 +365,7 @@ async def update_report(report_id: int, latitude: str = Form(None),
                        message: str = Form(None),
                        ai_message: str = Form(None),
                        new_image: UploadFile = File(None),
+                       from_nasa: bool = Form(None),
                        db: Session = Depends(get_db)):
     """
     update report data
@@ -373,6 +376,7 @@ async def update_report(report_id: int, latitude: str = Form(None),
         "message": message,
         "ai_message": ai_message,
         "image": new_image,
+        "from_nasa": from_nasa
     }
 
     if new_image is not None:

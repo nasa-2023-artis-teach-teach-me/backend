@@ -19,7 +19,7 @@ def store_image(image):
             S3_ENDPOINT_URL,
             access_key=S3_ACCESS_KEY_ID,
             secret_key=S3_SECRET_ACCESS_KEY,
-            secure=False
+            secure=True
         )
     except Exception as e:
         raise e

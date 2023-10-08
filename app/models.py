@@ -1,6 +1,6 @@
 """Module containing SQLAlchemy models for the Fire and Report tables."""
 
-from sqlalchemy import Column, Float, Integer, String, TIMESTAMP
+from sqlalchemy import Column, Float, Integer, String, Boolean, TIMESTAMP
 from app.database import Base
 
 class Fire(Base):
@@ -58,4 +58,5 @@ class Report(Base):
     image_url = Column(String)
     message = Column(String)
     ai_message = Column(String)
+    from_nasa = Column(Boolean)
     timestamp = Column(TIMESTAMP)

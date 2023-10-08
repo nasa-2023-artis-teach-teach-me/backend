@@ -211,6 +211,7 @@ def post_report(db: Session, report_data: object, image_url: str = None):
         image_url=image_url,
         message=report_data["message"],
         timestamp=(datetime.now() + timedelta(days=-1)).strftime("%Y-%m-%d %H:%M:%S"),
+        from_nasa = report_data["from_nasa"]
     )
     db.add(db_report)
     db.commit()
@@ -279,7 +280,8 @@ def update_report(db: Session, report_id: int ,report_data: object, image_url: s
         existing_report.ai_message = report_data["ai_message"]
     if image_url is not None:
         existing_report.image_url = image_url
-
+    if report_data.get("from_nasa") is not None:
+        existing_report.message = report_data["from_nasa"]
     db.commit()
 
     db.refresh(existing_report)
@@ -303,16 +305,8 @@ def update_report_with_raw(db: Session, date: str,):
                 longitude=fire_data.longitude,
                 image_url= "string",
                 message=
-                f"""The provided "fire_data" represents information about a specific fire event that occurred on {fire_data.acq_date}. 
-    The fire's location is indicated by its longitude of {fire_data.longitude} and latitude of {fire_data.latitude}. 
-    This fire had a high level of confidence, scoring {fire_data.confidence}, which suggests a strong likelihood that it was indeed a fire. 
-    The brightness of the fire was measured at 311.81, and it emitted a fire radiative power (FRP) of {fire_data.frp}. 
-    The scan value of 2.3 indicates the satellite scan angle, while the track is {fire_data.scan}. 
-    The fire was detected at 221 seconds past midnight, as indicated by the {fire_data.longitude}.
-    Additionally, the brightness temperature at 3.1 micrometers (bright_t31) was {fire_data.bright_t31}, 
-    and the event occurred during the nighttime, denoted by "daynight" as {fire_data.daynight}.
-    The absence of a country ID suggests that the fire may be located in an area with unclear jurisdiction or remote location. 
-    This data provides valuable insights into the characteristics and location of the fire event on the specified date.""",
+                f"""This is a fire reported by NASA FIRMS on {fire_data.acq_date} at [{fire_data.longitude}, {fire_data.latitude}], which has a confidence level of {fire_data.confidence}%. The pixel-integrated fire radiative power is {fire_data.frp} MW, and the brightness temperature measured (in Kelvin) of channel 21/22 is {fire_data.brightness}, while channel 31 recoreds a temperature of {fire_data.bright_t31}.""",
+                from_nasa= True,
                 timestamp= datetime.strptime(fire_data.acq_date, "%Y-%m-%d") ,
             )
             db.add(db_report)
