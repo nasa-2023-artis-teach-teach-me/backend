@@ -25,17 +25,17 @@ def get_fire(db: Session, fire_id: int):
     data = db.query(Fire).filter(Fire.id == fire_id).first()
     point = geojson.Point((data.longitude, data.latitude, 0))
     properties = {
-        "id": data.id,
-        "country_id": data.country_id,
-        "brightness": data.brightness,
-        "scan": data.scan,
-        "track": data.track,
-        "acq_date": data.acq_date,
-        "acq_time": data.acq_time,
-        "confidence": data.confidence,
-        "bright_t31": data.bright_t31,
-        "frp": data.frp,
-        "daynight": data.daynight,
+        # "id": data.id,
+        # "country_id": data.country_id,
+        # "brightness": data.brightness,
+        # "scan": data.scan,
+        # "track": data.track,
+        # "acq_date": data.acq_date,
+        # "acq_time": data.acq_time,
+        # "confidence": data.confidence,
+        # "bright_t31": data.bright_t31,
+        # "frp": data.frp,
+        # "daynight": data.daynight,
     }
 
     feature = geojson.Feature(geometry=point, properties=properties)
@@ -64,7 +64,6 @@ def get_fire_raw_by_date(db: Session, date: str):
         .filter(Fire.confidence >= confidence)
         .all()
     )
-
     result = []
 
     for data in fire_data:
@@ -100,18 +99,18 @@ def get_fire_by_date(db: Session, date: str):
     for data in fire_data:
         point = geojson.Point((data.longitude, data.latitude, 0))
         properties = {
-            "id": data.id,
-            "country_id": data.country_id,
-            "brightness": data.brightness,
-            "scan": data.scan,
-            "track": data.track,
-            "acq_date": data.acq_date,
-            "acq_time": data.acq_time,
-            "confidence": data.confidence,
-            "bright_t31": data.bright_t31,
-            "frp": data.frp,
-            "daynight": data.daynight,
-            "src": "firm"
+            # "id": data.id,
+            # "country_id": data.country_id,
+            # "brightness": data.brightness,
+            # "scan": data.scan,
+            # "track": data.track,
+            # "acq_date": data.acq_date,
+            # "acq_time": data.acq_time,
+            # "confidence": data.confidence,
+            # "bright_t31": data.bright_t31,
+            # "frp": data.frp,
+            # "daynight": data.daynight,
+            # "src": "firm"
         }
         feature = geojson.Feature(geometry=point, properties=properties)
         features.append(feature)
