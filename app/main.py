@@ -261,6 +261,25 @@ async def get_report(db: Session = Depends(get_db)):
     report_data = crud.get_report(db)
     return report_data
 
+
+
+@app.get("/api/report/date/{date}", response_model=None)
+async def get_report_by_date(date: str, db: Session = Depends(get_db)):
+    """
+    Get fire data by date.
+
+    Parameters:
+    - date (str): The date of the fire data to retrieve.
+    - db (Session): The database session to use.
+
+    Returns:
+    dict: A dictionary containing fire data.
+    """
+    report_data = crud.get_report_by_date(db, date)
+    return report_data
+
+
+
 @app.post("/api/report", response_model=None)
 async def post_report(
     background_tasks: BackgroundTasks,
@@ -371,6 +390,11 @@ async def get_report_by_lonlat(lon: str, lat: str, db: Session = Depends(get_db)
 @app.on_event("startup")
 async def startup_event():
     app.state.executor = ProcessPoolExecutor()
+
+@app.get("/api/report/updat/fire/{date}", response_model=None)
+async def update_report_with_raw(date: str, db: Session = Depends(get_db)):
+    report_data = crud.update_report_with_raw(db, date)
+    return report_data
 
 def start():
     """
