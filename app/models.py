@@ -38,7 +38,6 @@ class Fire(Base):
     frp = Column(Float)
     daynight = Column(String)
 
-
 class Report(Base):
     """
     SQLAlchemy model for the Report table.

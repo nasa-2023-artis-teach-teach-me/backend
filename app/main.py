@@ -16,6 +16,7 @@ from app import config
 from app.group import Group
 from app.src.readers import INPUT
 from app.s3 import store_image
+from app.database import create_tables
 
 app = FastAPI()
 
@@ -28,6 +29,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+create_tables()
 
 def get_db():
     """
@@ -68,6 +70,37 @@ async def count(settings: Annotated[config.Settings, Depends(get_settings)]):
     transaction_count = get_transaction_count(settings.MAP_KEY)
     return {"message": "Hello World", "transaction count": transaction_count}
 
+@app.post("/api/fire", response_model=None)
+def post_fire(
+    latitude:float = Form(...),
+    longitude:float = Form(...),
+    brightness:float = Form(...),
+    scan:float = Form(...),
+    track:float = Form(...),
+    acq_date:str = Form(...),
+    acq_time:int = Form(...),
+    confidence:int = Form(...),
+    bright_t31:float = Form(...),
+    frp:float = Form(...),
+    daynight:str = Form(...),
+    db: Session = Depends(get_db),
+):
+    report_data = {
+        "latitude": latitude,
+        "longitude": longitude,
+        "brightness": brightness,
+        "scan": scan,
+        "track": track,
+        "acq_date": acq_date,
+        "acq_time": acq_time,
+        "confidence": confidence,
+        "bright_t31": bright_t31,
+        "frp": frp,
+        "daynight": daynight,
+    }
+
+    report_data = crud.post_fire(db, report_data)
+    return report_data
 
 @app.get("/api/fire/{fire_id}", response_model=None)
 async def get_fire(fire_id: int, db: Session = Depends(get_db)):
@@ -83,7 +116,6 @@ async def get_fire(fire_id: int, db: Session = Depends(get_db)):
     """
     fire_data = crud.get_fire(db, fire_id)
     return fire_data
-
 
 @app.get("/api/fire/date/{date}", response_model=None)
 async def get_fire_by_date(date: str, db: Session = Depends(get_db)):
