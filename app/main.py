@@ -114,7 +114,7 @@ async def get_raw_fire(date: str, db: Session = Depends(get_db)):
 
     for report in reports:
         try:
-            positions.append([float(report.longitude), float(report.latitude)])
+            positions.append([float(report.latitude), float(report.longitude)])
         except ValueError:
             pass
 
