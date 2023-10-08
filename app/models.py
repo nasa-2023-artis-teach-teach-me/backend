@@ -57,6 +57,7 @@ class Report(Base):
     longitude = Column(String)
     image_url = Column(String)
     message = Column(String)
+    category = Column(String)
     ai_message = Column(String)
     from_nasa = Column(Boolean)
     timestamp = Column(TIMESTAMP)

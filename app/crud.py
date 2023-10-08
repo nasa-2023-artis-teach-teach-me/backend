@@ -165,7 +165,7 @@ def get_fire_by_date(db: Session, date: str):
         features.append(feature)
         feature_collection = geojson.FeatureCollection(features)
 
-    reports = get_report_by_date(db, date)
+    reports = get_report_by_date(db, date, True)
 
     for report in reports:
 
@@ -209,6 +209,7 @@ def post_report(db: Session, report_data: object, image_url: str = None):
         latitude=report_data["latitude"],
         longitude=report_data["longitude"],
         image_url=image_url,
+        category=report_data["category"],
         message=report_data["message"],
         timestamp=(datetime.now() + timedelta(days=-1)).strftime("%Y-%m-%d %H:%M:%S"),
         from_nasa = report_data["from_nasa"]
@@ -246,12 +247,17 @@ def get_report_by_id(db: Session, report_id: int):
     data = db.query(Report).filter(Report.id == report_id).first()
     return data
 
-def get_report_by_date(db: Session, date: str):
+def get_report_by_date(db: Session, date: str, only_fire: bool = False):
 
     start = datetime.strptime(date, '%Y-%m-%d')
     end = start + timedelta(days=1)
-    
-    db_report = db.query(Report).filter(and_(Report.timestamp > start, Report.timestamp < end)).all()
+
+    db_report = None
+
+    if only_fire:
+        db_report = db.query(Report).filter(and_(Report.timestamp > start, Report.timestamp < end)).filter(Report.category == 'fire-report').all()
+    else:
+        db_report = db.query(Report).filter(and_(Report.timestamp > start, Report.timestamp < end)).all()
     return db_report
 
 
@@ -278,6 +284,8 @@ def update_report(db: Session, report_id: int ,report_data: object, image_url: s
         existing_report.message = report_data["message"]
     if report_data.get("ai_message") is not None:
         existing_report.ai_message = report_data["ai_message"]
+    if report_data.get("category") is not None:
+        existing_report.category = report_data["category"]
     if image_url is not None:
         existing_report.image_url = image_url
     if report_data.get("from_nasa") is not None:
@@ -289,7 +297,7 @@ def update_report(db: Session, report_id: int ,report_data: object, image_url: s
 
 def get_report_by_lonlat(db: Session, lon: str, lat: str):
 
-    data = db.query(Report).filter(Report.longitude == lon).all()
+    data = db.query(Report).filter(Report.longitude == lon).filter(Report.latitude == lat).all()
     return data
 
 def update_report_with_raw(db: Session, date: str,):

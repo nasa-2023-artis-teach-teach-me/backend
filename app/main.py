@@ -86,6 +86,9 @@ def get_ai_reponse(data: dict):
         except requests.exceptions.ConnectionError:
             DEFAULT_MSG = "To prevent flames, consider the following steps:\n\n1. Ensure p. Maintain clear surroundings: Keep the area around the structure clear of dls: Choose fire-resistant materials for construction and clothing to minimiznguish fires quickly, reducing the damage and risk to life.\n5. Regular mainn good working order.\n"
 
+            
+        data['ai_message'] = DEFAULT_MSG
+
         requests.patch(
             f"http://localhost:8000/api/report/{data.get('id')}",
             data
@@ -205,7 +208,7 @@ async def get_raw_fire(date: str, db: Session = Depends(get_db)):
     for fire in fires:
         positions.append(fire.get("position"))
 
-    reports = crud.get_report_by_date(db, date)
+    reports = crud.get_report_by_date(db, date, True)
 
     for report in reports:
         try:
