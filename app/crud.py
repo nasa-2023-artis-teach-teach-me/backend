@@ -162,7 +162,7 @@ def post_report(db: Session, report_data: object, image_url: str = None):
         longitude=report_data["longitude"],
         image_url=image_url,
         message=report_data["message"],
-        timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S") + timedelta(days=-1),
+        timestamp=(datetime.now() + timedelta(days=-1)).strftime("%Y-%m-%d %H:%M:%S"),
     )
     db.add(db_report)
     db.commit()
