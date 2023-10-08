@@ -110,6 +110,14 @@ async def get_raw_fire(date: str, db: Session = Depends(get_db)):
     for fire in fires:
         positions.append(fire.get("position"))
 
+    reports = crud.get_report_by_date(db, date)
+
+    for report in reports:
+        try:
+            positions.append([float(report.longitude), float(report.latitude)])
+        except ValueError:
+            pass
+
     groups = Group(INPUT(positions))
     result = []
 

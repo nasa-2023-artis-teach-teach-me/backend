@@ -2,9 +2,10 @@
 This file implement crud actions
 """
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 import geojson
 from fastapi import HTTPException
+from sqlalchemy import and_, func
 from sqlalchemy.orm import Session
 from app.models import Fire, Report
 
@@ -137,7 +138,7 @@ def post_report(db: Session, report_data: object, image_url: str = None):
         longitude=report_data["longitude"],
         image_url=image_url,
         message=report_data["message"],
-        timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S") + timedelta(days=-1),
     )
     db.add(db_report)
     db.commit()
@@ -172,6 +173,13 @@ def get_report_by_id(db: Session, report_id: int):
     data = db.query(Report).filter(Report.id == report_id).first()
     return data
 
+def get_report_by_date(db: Session, date: str):
+
+    start = datetime.strptime(date, '%Y-%m-%d')
+    end = start + timedelta(days=1)
+    
+    db_report = db.query(Report).filter(and_(Report.timestamp > start, Report.timestamp < end)).all()
+    return db_report
 
 
 def update_report(db: Session, report_id: int ,report_data: object, image_url: str = None):
