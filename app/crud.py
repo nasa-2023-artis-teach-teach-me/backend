@@ -23,7 +23,7 @@ def get_fire(db: Session, fire_id: int):
     """
     features = []
     data = db.query(Fire).filter(Fire.id == fire_id).first()
-    point = geojson.Point((data.longitude, data.latitude, 0))
+    point = geojson.Point((float(data.longitude), float(data.latitude), 0))
     properties = {
         # "id": data.id,
         # "country_id": data.country_id,
@@ -70,7 +70,7 @@ def get_fire_raw_by_date(db: Session, date: str):
 
         result.append({
             "id": data.id,
-            "position": [data.longitude, data.latitude]
+            "position": [float(data.longitude), float(data.latitude)]
         })
 
     return result
@@ -97,7 +97,7 @@ def get_fire_by_date(db: Session, date: str):
     features = []
 
     for data in fire_data:
-        point = geojson.Point((data.longitude, data.latitude, 0))
+        point = geojson.Point((float(data.longitude), float(data.latitude), 0))
         properties = {
             # "id": data.id,
             # "country_id": data.country_id,
