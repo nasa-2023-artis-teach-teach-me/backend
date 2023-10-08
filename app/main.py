@@ -8,6 +8,7 @@ import json
 import requests
 from typing import List
 import uvicorn
+from datetime import datetime, timedelta
 from concurrent.futures.process import ProcessPoolExecutor
 from fastapi import Depends, FastAPI, UploadFile, File, Form, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
@@ -335,7 +336,7 @@ async def post_report(
         'category': report_data.get('category'),
         'id': report_data.get('id'),
         'image_url': report_data.get('image_url'),
-        'timestamp': report_data.get('timestamp')
+        'timestamp': (datetime.now() + timedelta(days=-1)).strftime("%Y-%m-%d %H:%M:%S")
     })
 
     print(f"REQUESTING AI FOR {request_data}")
