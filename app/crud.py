@@ -219,7 +219,5 @@ def update_report(db: Session, report_id: int ,report_data: object, image_url: s
 
 def get_report_by_lonlat(db: Session, lon: str, lat: str):
 
-    print(lon)
-
     data = db.query(Report).filter(Report.longitude == lon).all()
     return data
