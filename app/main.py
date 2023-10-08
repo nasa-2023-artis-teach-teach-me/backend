@@ -63,7 +63,7 @@ def get_ai_reponse(data: dict):
 
             r = requests.post(
                 f"{AI_SERVER_URL}/api/llava",
-                {
+                json.dumps({
                     "longitude": data.get('longitude'),
                     "latitude": data.get('latitude'),
                     "message": data.get('message'),
@@ -71,7 +71,7 @@ def get_ai_reponse(data: dict):
                     "id": data.get('id'),
                     "image_url": data.get('image_url'),
                     "timestamp": data.get('timestamp')
-                },
+                }),
                 headers={
                     "accept": "application/json",
                     "Content-Type": "application/json"
