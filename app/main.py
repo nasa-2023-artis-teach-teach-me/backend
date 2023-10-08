@@ -118,7 +118,7 @@ async def get_raw_fire(date: str, db: Session = Depends(get_db)):
         except ValueError:
             pass
 
-    if len(positions) is 0:
+    if len(positions) == 0:
         return []
 
     groups = Group(INPUT(positions))
