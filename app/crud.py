@@ -76,6 +76,36 @@ def get_fire_raw_by_date(db: Session, date: str):
     return result
 
 
+def get_fire_raw_by_date_str(db: Session, date: str):
+    """
+    Retrieve fire data by date and confidence level and return it as GeoJSON.
+
+    Args:
+        db (Session): The SQLAlchemy database session.
+        date (str): The date for which to retrieve fire data.
+
+    Returns:
+        dict: A GeoJSON representation of the retrieved fire data.
+    """
+    confidence: int = 70
+    fire_data = list(
+        db.query(Fire)
+        .filter(Fire.acq_date == date)
+        .filter(Fire.confidence >= confidence)
+        .all()
+    )
+    result = []
+
+    for data in fire_data:
+
+        result.append({
+            "id": data.id,
+            "position": [data.longitude, data.latitude]
+        })
+
+    return result
+
+
 def get_fire_by_date(db: Session, date: str):
     """
     Retrieve fire data by date and confidence level and return it as GeoJSON.
@@ -240,7 +270,7 @@ def get_report_by_lonlat(db: Session, lon: str, lat: str):
     return data
 
 def update_report_with_raw(db: Session, date: str,):
-    fire_raw = get_fire_raw_by_date(db, date)
+    fire_raw = get_fire_raw_by_date_str(db, date)
     for all_pos in fire_raw:
         pos_lon = all_pos["position"][0]
         pos_lat = all_pos["position"][1]
