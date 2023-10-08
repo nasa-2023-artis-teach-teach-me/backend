@@ -96,11 +96,6 @@ def get_fire_by_date(db: Session, date: str):
         .all()
     )
     features = []
-    
-    if len(fire_data) is 0:
-        return {
-            "features": []
-        }
 
     for data in fire_data:
         point = geojson.Point((data.longitude, data.latitude, 0))
@@ -116,11 +111,34 @@ def get_fire_by_date(db: Session, date: str):
             "bright_t31": data.bright_t31,
             "frp": data.frp,
             "daynight": data.daynight,
+            "src": "firm"
         }
         feature = geojson.Feature(geometry=point, properties=properties)
         features.append(feature)
         feature_collection = geojson.FeatureCollection(features)
 
+    reports = get_report_by_date(db, date)
+
+    for report in reports:
+
+        point = geojson.Point((float(report.longitude), float(report.latitude), 0))
+        properties = {
+            "id": report.id,
+            "message": report.message,
+            "image_url": report.image_url,
+            "acq_time": str(report.timestamp),
+            "acq_date": str(report.timestamp).split(' ')[0],
+            "src": "report"
+        }
+        feature = geojson.Feature(geometry=point, properties=properties)
+        features.append(feature)
+        feature_collection = geojson.FeatureCollection(features)
+    
+    if len(features) == 0:
+        return {
+            "type": "FeatureCollection",
+            "features": []
+        }
 
     geojson_string = geojson.dumps(feature_collection, sort_keys=True)
     geojson_dict = json.loads(geojson_string)
