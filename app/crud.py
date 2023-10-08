@@ -9,6 +9,25 @@ from sqlalchemy import and_, func
 from sqlalchemy.orm import Session
 from app.models import Fire, Report
 
+def post_fire(db: Session, data: object):
+    db_fire = Fire(
+        country_id = data.get("country_id"),
+        latitude = data.get("latitude"),
+        longitude = data.get("longitude"),
+        brightness = data.get("brightness"),
+        scan = data.get("scan"),
+        track = data.get("track"),
+        acq_date = data.get("acq_date"),
+        acq_time = data.get("acq_time"),
+        confidence = data.get("confidence"),
+        bright_t31 = data.get("bright_t31"),
+        frp = data.get("frp"),
+        daynight = data.get("daynight")
+    )
+    db.add(db_fire)
+    db.commit()
+    db.refresh(db_fire)
+    return db_fire
 
 def get_fire(db: Session, fire_id: int):
     """
@@ -256,6 +275,8 @@ def update_report(db: Session, report_id: int ,report_data: object, image_url: s
         existing_report.longitude = report_data["longitude"]
     if report_data.get("message") is not None:
         existing_report.message = report_data["message"]
+    if report_data.get("ai_message") is not None:
+        existing_report.ai_message = report_data["ai_message"]
     if image_url is not None:
         existing_report.image_url = image_url
 
