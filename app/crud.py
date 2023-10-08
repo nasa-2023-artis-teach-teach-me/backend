@@ -96,6 +96,11 @@ def get_fire_by_date(db: Session, date: str):
         .all()
     )
     features = []
+    
+    if len(fire_data) is 0:
+        return {
+            "features": []
+        }
 
     for data in fire_data:
         point = geojson.Point((data.longitude, data.latitude, 0))
@@ -115,6 +120,7 @@ def get_fire_by_date(db: Session, date: str):
         feature = geojson.Feature(geometry=point, properties=properties)
         features.append(feature)
         feature_collection = geojson.FeatureCollection(features)
+
 
     geojson_string = geojson.dumps(feature_collection, sort_keys=True)
     geojson_dict = json.loads(geojson_string)
@@ -212,8 +218,6 @@ def update_report(db: Session, report_id: int ,report_data: object, image_url: s
     return existing_report
 
 def get_report_by_lonlat(db: Session, lon: str, lat: str):
-
-    print(lon)
 
     data = db.query(Report).filter(Report.longitude == lon).all()
     return data
