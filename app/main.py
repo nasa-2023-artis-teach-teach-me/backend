@@ -26,7 +26,7 @@ from app.database import create_tables
 from uuid import UUID, uuid4
 from pydantic import BaseModel, Field
 
-AI_SERVER_URL = os.environ.get("AI_SERVER_URL")
+AI_SERVER_URL = os.environ.get("AI_SERVER_URL", "http://10.3.25.2:8000")
 
 app = FastAPI()
 
