@@ -118,6 +118,9 @@ async def get_raw_fire(date: str, db: Session = Depends(get_db)):
         except ValueError:
             pass
 
+    if len(positions) is 0:
+        return []
+
     groups = Group(INPUT(positions))
     result = []
 
@@ -142,8 +145,6 @@ async def get_raw_fire(date: str, db: Session = Depends(get_db)):
             "positions": json.loads(repr(group)),
             "id": ids
         })
-
-    print(result)
 
     return result
 
