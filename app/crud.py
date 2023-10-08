@@ -121,7 +121,7 @@ def get_fire_by_date(db: Session, date: str):
 
     for report in reports:
 
-        point = geojson.Point(float(report.latitude), (float(report.longitude), 0))
+        point = geojson.Point((float(report.longitude), float(report.latitude), 0))
         properties = {
             "id": report.id,
             "message": report.message,
