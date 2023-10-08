@@ -59,7 +59,7 @@ def get_ai_reponse(data: dict):
             r = requests.get(AI_SERVER_URL)
 
             if not r.ok:
-                raise ConnectionRefusedError
+                raise requests.exceptions.ConnectionError
 
             r = requests.post(
                 f"{AI_SERVER_URL}/api/llava",
@@ -67,7 +67,7 @@ def get_ai_reponse(data: dict):
                     "longitude": data.get('longitude'),
                     "latitude": data.get('latitude'),
                     "message": data.get('message'),
-                    # "category": data.get('category'),
+                    "category": data.get('category'),
                     "id": data.get('id'),
                     "image_url": data.get('image_url'),
                     "timestamp": data.get('timestamp')
@@ -326,6 +326,9 @@ async def post_report(
 
     new_task = Job()
     jobs[new_task.uid] = new_task
+
+    print(f"REQUESTING AI FOR {report_data}")
+
     background_tasks.add_task(start_ai_task, new_task.uid, report_data)
 
     return result
