@@ -8,7 +8,6 @@ import json
 import requests
 from typing import List
 import uvicorn
-from datetime import datetime, timedelta
 from concurrent.futures.process import ProcessPoolExecutor
 from fastapi import Depends, FastAPI, UploadFile, File, Form, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
@@ -209,7 +208,7 @@ async def get_raw_fire(date: str, db: Session = Depends(get_db)):
     for fire in fires:
         positions.append(fire.get("position"))
 
-    reports = crud.get_report_by_date(db, date)
+    reports = crud.get_report_by_date(db, date, True)
 
     for report in reports:
         try:
