@@ -25,8 +25,8 @@ class Fire(BaseModel):
     """
     id: int
     country_id: str
-    latitude: float
-    longitude: float
+    latitude: str
+    longitude: str
     brightness: float
     scan: float
     track: float

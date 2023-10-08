@@ -276,6 +276,14 @@ async def get_report_by_lonlat(lon: str, lat: str, db: Session = Depends(get_db)
     report_data = crud.get_report_by_lonlat(db, lon, lat)
     return report_data
 
+
+@app.get("/api/report/updat/fire/{date}", response_model=None)
+async def update_report_with_raw(date: str, db: Session = Depends(get_db)):
+    report_data = crud.update_report_with_raw(db, date)
+    return report_data
+
+
+
 def start():
     """
     Start the FastAPI application using Uvicorn.
