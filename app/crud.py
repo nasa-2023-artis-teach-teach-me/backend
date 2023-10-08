@@ -80,7 +80,7 @@ def get_fire_raw_by_date(db: Session, date: str):
     fire_data = list(
         db.query(Fire)
         .filter(Fire.acq_date == date)
-        .filter(Fire.confidence >= confidence)
+        # .filter(Fire.confidence >= confidence)
         .all()
     )
     result = []
@@ -110,7 +110,7 @@ def get_fire_raw_by_date_str(db: Session, date: str):
     fire_data = list(
         db.query(Fire)
         .filter(Fire.acq_date == date)
-        .filter(Fire.confidence >= confidence)
+        # .filter(Fire.confidence >= confidence)
         .all()
     )
     result = []
@@ -140,7 +140,7 @@ def get_fire_by_date(db: Session, date: str):
     fire_data = list(
         db.query(Fire)
         .filter(Fire.acq_date == date)
-        .filter(Fire.confidence >= confidence)
+        # .filter(Fire.confidence >= confidence)
         .all()
     )
     features = []
