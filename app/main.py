@@ -324,7 +324,7 @@ async def post_report(
     
     report_data["id"] = result.id
     report_data["image_url"] = result.image_url
-    report_data["timestamp"] = result.timestamp
+    report_data["timestamp"] = str(result.timestamp)
 
     new_task = Job()
     jobs[new_task.uid] = new_task
