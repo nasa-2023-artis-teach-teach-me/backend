@@ -313,3 +313,17 @@ def update_report_with_raw(db: Session, date: str,):
             db.commit()
             db.refresh(db_report)
     return "update success"
+
+
+def get_manual_report(db: Session):
+    """
+    Retrieve a report by its unique ID from the database.
+
+    Args:
+        db (Session): The SQLAlchemy database session.
+
+    Returns:
+        Report: The report data.
+    """
+    data = db.query(Report).filter(Report.from_nasa == False).all()
+    return list(data)

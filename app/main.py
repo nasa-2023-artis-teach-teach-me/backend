@@ -279,6 +279,21 @@ async def get_report_by_date(date: str, db: Session = Depends(get_db)):
     report_data = crud.get_report_by_date(db, date)
     return report_data
 
+@app.get("/api/report/manual", response_model=None)
+async def get_manual_report(db: Session = Depends(get_db)):
+    """
+    Get fire data by date.
+
+    Parameters:
+    - date (str): The date of the fire data to retrieve.
+    - db (Session): The database session to use.
+
+    Returns:
+    dict: A dictionary containing fire data.
+    """
+    report_data = crud.get_manual_report(db)
+    return report_data
+
 
 
 @app.post("/api/report", response_model=None)
