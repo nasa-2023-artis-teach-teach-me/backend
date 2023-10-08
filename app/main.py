@@ -324,7 +324,7 @@ async def post_report(
     
     report_data["id"] = result.id
     report_data["image_url"] = result.image_url
-    report_data["timetamp"] = result.timestamp
+    report_data["timestamp"] = result.timestamp
 
     new_task = Job()
     jobs[new_task.uid] = new_task
@@ -336,7 +336,7 @@ async def post_report(
         'category': report_data.get('category'),
         'id': report_data.get('id'),
         'image_url': report_data.get('image_url'),
-        'timestamp': (datetime.now() + timedelta(days=-1)).strftime("%Y-%m-%d %H:%M:%S")
+        'timestamp': report_data.get('timestamp')
     })
 
     print(f"REQUESTING AI FOR {request_data}")
