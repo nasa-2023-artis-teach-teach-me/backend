@@ -262,7 +262,7 @@ def update_report_with_raw(db: Session, date: str,):
     and the event occurred during the nighttime, denoted by "daynight" as {fire_data.daynight}.
     The absence of a country ID suggests that the fire may be located in an area with unclear jurisdiction or remote location. 
     This data provides valuable insights into the characteristics and location of the fire event on the specified date.""",
-                timestamp=(datetime.now() + timedelta(days=-1)).strftime("%Y-%m-%d %H:%M:%S"),
+                timestamp= datetime.strptime(fire_data.acq_date, "%Y-%m-%d") ,
             )
             db.add(db_report)
             db.commit()
