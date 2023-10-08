@@ -26,8 +26,8 @@ class Fire(Base):
     __tablename__ = "fires"
     id = Column(Integer, primary_key=True, index=True)
     country_id = Column(String, unique=True, index=True)
-    latitude = Column(Float)
-    longitude = Column(Float)
+    latitude = Column(String)
+    longitude = Column(String)
     brightness = Column(Float)
     scan = Column(Float)
     track = Column(Float)
