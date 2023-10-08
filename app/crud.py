@@ -281,7 +281,7 @@ def update_report(db: Session, report_id: int ,report_data: object, image_url: s
     if image_url is not None:
         existing_report.image_url = image_url
     if report_data.get("from_nasa") is not None:
-        existing_report.message = report_data["from_nasa"]
+        existing_report.from_nasa = report_data["from_nasa"]
     db.commit()
 
     db.refresh(existing_report)

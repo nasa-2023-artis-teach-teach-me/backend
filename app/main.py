@@ -8,7 +8,6 @@ import json
 import requests
 from typing import List
 import uvicorn
-from datetime import datetime, timedelta
 from concurrent.futures.process import ProcessPoolExecutor
 from fastapi import Depends, FastAPI, UploadFile, File, Form, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
@@ -86,9 +85,6 @@ def get_ai_reponse(data: dict):
 
         except requests.exceptions.ConnectionError:
             DEFAULT_MSG = "To prevent flames, consider the following steps:\n\n1. Ensure p. Maintain clear surroundings: Keep the area around the structure clear of dls: Choose fire-resistant materials for construction and clothing to minimiznguish fires quickly, reducing the damage and risk to life.\n5. Regular mainn good working order.\n"
-
-            
-        data['ai_message'] = DEFAULT_MSG
 
         requests.patch(
             f"http://localhost:8000/api/report/{data.get('id')}",
